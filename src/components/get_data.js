@@ -18,7 +18,7 @@ export default class GetData extends Component {
 
     getData() {
         this.setState({isLoading: true});
-        let url = 'http://0.0.0.0:3080';
+        let url = 'http://localhost:3080';
         const jsonResponse = fetch(url, {
             method: 'GET',
             headers: {'Accept': 'application/json'},
@@ -83,7 +83,7 @@ export default class GetData extends Component {
         this.setState({isLoading: true});
         let new_data = Object.assign({}, data);
         delete new_data["Accion"];
-        let url = 'http://0.0.0.0:3080/create_pdf';
+        let url = 'http://localhost:3080/create_pdf';
         const jsonResponse = fetch(url, {
             method: 'POST',
             headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
