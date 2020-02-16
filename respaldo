@@ -1,0 +1,44 @@
+let fila_tipos = <thead>
+            <tr>{tipos.map(elem => <th key={elem}>{elem}</th>)}</tr>
+            </thead>;
+
+            let filas_datos = [];
+            let i;
+            for (i = 0; i<datos.length; i++){
+               let j;
+               let dato_tipo = [];
+               for (j = 0; j<datos[i].length; j++){
+                   dato_tipo.push(<td key={datos[i].length * i + j}>{datos[i][j]}</td>);
+               }
+               dato_tipo.push(<td key={datos.length * 2 * datos[i].length + i}><Button>Crear reporte</Button></td>);
+               filas_datos.push(<tr key={i}>{dato_tipo}</tr>);
+            }
+
+
+            // let filas_datos =
+            //     <tbody>
+            //     {datos.map(
+            //         row =>
+            //             <tr key={row[0]}>
+            //                 {row.map(value =>
+            //                     <td key={value.index + value}>
+            //                         {row[value]}
+            //                     </td>
+            //                 )}
+            //             </tr>
+            //     )}
+            //     </tbody>;
+            let tabla_final =
+                <Table responsive>
+                    {fila_tipos}
+                    <tbody>
+                    {filas_datos}
+                    </tbody>
+                </Table>;
+            return (
+                <div>
+
+                    <br/>
+                    {tabla_final}
+                </div>
+            );
