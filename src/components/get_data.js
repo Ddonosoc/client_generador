@@ -4,18 +4,18 @@ import Button from "react-bootstrap/Button";
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import Charging from "./charging";
-
+import { fadeIn, fadeOut } from 'react-animations';
+import Radium, {StyleRoot} from 'radium';
 
 export default class GetData extends Component {
     constructor(props) {
         super(props);
-        this.state = {isLoading: true, error: null, data: null, id: null}
+        this.state = {isLoading: true, error: null, data: null, id: null, isPending: false}
     }
 
     componentDidMount() {
         this.getData();
     }
-
     getData() {
         this.setState({isLoading: true});
         let url = 'http://localhost:3080';
@@ -53,15 +53,19 @@ export default class GetData extends Component {
 
                 for (i = 0; i < datos.length; i++){
                     let dat = datos[i];
-                    datos[i]["Accion"] = <Button onClick={() => this.crear_documento(dat)}>Crear reporte</Button>;
+                    let buttonStyle= {
+                      backgroundColor: "#2CB868",
+                        borderColor: "#0E9548",
+                    };
+                    datos[i]["Accion"] = <Button onClick={() => this.crear_documento(dat)} style={buttonStyle}>Crear reporte</Button>;
                 }
 
                 this.setState({table_types: types_table, table_data: datos});
                 this.setState({
                     data: {"types": json["types"], "rows": json["rows"]},
                     isLoading: false,
+                    pending: true,
                 });
-
             })
             .catch(response => {
                 response.json().then(text => {
@@ -73,7 +77,8 @@ export default class GetData extends Component {
                         let errorTxt = "Something went wrong ...";
                         this.setState({
                             error: errorTxt.concat("error ", response.status, ". There was an error during execution."),
-                            isLoading: false
+                            isLoading: false,
+                            pending: true
                         })
                     });
             });
@@ -98,11 +103,11 @@ export default class GetData extends Component {
                 }
             })
             .then(json => {
-                this.setState({isLoading: false});
+                this.setState({isLoading: false, pending: true});
                 alert("Reporte generado, el nombre es: " + json["name"]);
             })
             .catch(response => {
-                this.setState({isLoading: false});
+                this.setState({isLoading: false, pending: true});
                 response.json().then(text => {
                     let errorTxt = "Something went wrong ...";
                     errorTxt = errorTxt.concat("The request has a status of: ", response.status, " ", response.statusText);
@@ -117,15 +122,47 @@ export default class GetData extends Component {
 
 
     render() {
+        const style = {
+            backgroundColor: "black",
+            opacity: 0.35,
+            height: "100%",
+            width: "100%",
+            position: "fixed",
+            top: "0%",
+            left: "0%",
+        };
+        const fadeInStyle = {
+            fade: {
+                animation: 'x 1s',
+                animationName: Radium.keyframes(fadeIn, 'fadeIn')
+            }
+        };
+        const fadeOutStyle = {
+            fade: {
+                animation: 'x 1s',
+                animationName: Radium.keyframes(fadeOut, 'fadeOut')
+            }
+        };
+
+        let cargando = "";
+        if (this.state.isLoading){
+            cargando =
+                <StyleRoot>
+                    <div className="test" style={fadeInStyle.fade}>
+                        <div style={style}>
+                            <Charging loading={this.state.isLoading}/>
+                        </div>;
+                    </div>
+                </StyleRoot>;
+        }
         if (this.state.isLoading && this.state.data == null) {
-            return (<Charging loading={this.state.isLoading}/>);
+            return (cargando);
         } else {
             const {SearchBar} = Search;
 
             return (
                 <div>
-                    <Charging loading={this.state.isLoading}/>
-                    <br/>
+                    {cargando}
                     <ToolkitProvider
                         keyField="Numero"
                         data={ this.state.table_data }

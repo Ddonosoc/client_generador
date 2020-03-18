@@ -23,12 +23,19 @@ export default class Charging extends Component{
     }
 
     render() {
+        const style = {
+            top:"50%",
+            left:"47%",
+            position: "absolute",
+            opacity: 1,
+        };
+        // agregar style={style} a sweet-loading
         return (
-            <div className="sweet-loading">
+            <div className="sweet-loading" style={style}>
                 <BeatLoader
                     css={override}
-                    size={15}
-                    color={"#948899"}
+                    size={30}
+                    color={"#FFFFFF"}
                     loading={this.state.loading}
                 />
             </div>
