@@ -40,7 +40,7 @@ export default class GetData extends Component {
                 let types_table = [];
                 for (i = 0; i < tipos.length; i++) {
                     let sort = false;
-                    if (tipos[i] === "Numero"){
+                    if (tipos[i] === "N"){
                         sort = true;
                     }
                     let dict = {
@@ -137,12 +137,6 @@ export default class GetData extends Component {
                 animationName: Radium.keyframes(fadeIn, 'fadeIn')
             }
         };
-        const fadeOutStyle = {
-            fade: {
-                animation: 'x 1s',
-                animationName: Radium.keyframes(fadeOut, 'fadeOut')
-            }
-        };
 
         let cargando = "";
         if (this.state.isLoading){
@@ -164,10 +158,11 @@ export default class GetData extends Component {
                 <div>
                     {cargando}
                     <ToolkitProvider
-                        keyField="Numero"
+                        keyField="N"
                         data={ this.state.table_data }
                         columns={ this.state.table_types }
                         search
+                        striped={true}
                     >
                     {props =>(
                             <div>
@@ -175,7 +170,12 @@ export default class GetData extends Component {
                                 <SearchBar { ...props.searchProps } />
                                 <hr />
                                 <BootstrapTable
-                                    { ...props.baseProps }
+                                    hover
+                                    condensed
+                                    scrollX
+                                    headerClasses={"header-class"}
+                                    {...props.baseProps
+                                    }
                                 />
                             </div>
                     )}

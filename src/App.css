@@ -28,6 +28,17 @@
   color: #61dafb;
 }
 
+.table{
+  overflow: auto;
+  table-layout: auto;
+  display: block;
+  font-size: 14px;
+}
+
+.header-class{
+  background-color: #DCF3FF;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
