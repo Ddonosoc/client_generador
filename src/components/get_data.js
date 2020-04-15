@@ -145,7 +145,7 @@ export default class GetData extends Component {
                     <div className="test" style={fadeInStyle.fade}>
                         <div style={style}>
                             <Charging loading={this.state.isLoading}/>
-                        </div>;
+                        </div>
                     </div>
                 </StyleRoot>;
         }
